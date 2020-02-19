@@ -44,6 +44,7 @@ Route::get('Administrador','AdministradorController@indexA')->name('indexA');
 Route::get('RegistrarD','AdministradorController@RegistrarD')->name('RegistrarD');
 
 Route::post('Administrador','AdministradorController@IngresarD')->name('IngresarD');
+
 //Docente
 
 

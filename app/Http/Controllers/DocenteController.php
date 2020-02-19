@@ -6,20 +6,20 @@ use Illuminate\Http\Request;
 
 class DocenteController extends Controller
 {
-    public function index(){
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+   
+    public function indexD(){
         $cuentadante = false;
+    
 
         // return view ('miscambiosD', ['cambios' => $Cambios ] );
-        return view ('index', compact('cuentadante'));
+        return view ('Docente.index', compact('cuentadante'));
     }
 
-    public function cambios($vida = null){
 
-        $cambios = ['modifico','analizo','melapela'];
-        $cuentadante = false;
-       // return view ('miscambiosD', ['cambios' => $Cambios ] );
-       return view ('miscambiosD', compact('cambios','cuentadante','vida'));
-    }
         
     
 }

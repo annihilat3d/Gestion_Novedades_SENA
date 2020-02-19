@@ -2,7 +2,7 @@
  
 @section('contenido')
 <div class="container">
-<div class="center"><h3>¡Bienvenido!</h3>
+<div class="center"><h3>¡Bienvenido {{auth()->user()->name}}! </h3>
 
     <div class="row">
         <div class="col s12">

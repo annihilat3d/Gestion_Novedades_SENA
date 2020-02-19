@@ -26,8 +26,26 @@ Route::get('hola/{numero?}', function ($numero = 0) {
 
 Route::view('galeria','fotos', ['numero' => 150]);
 
-// Docente
+//Login
 
-Route::get('/','DocenteController@index')->name('index');
+Route::get('/','Auth\LoginController@ShowLoginForm')->name('ShowLoginForm');
 
-Route::get('Mis_Cambios/{vida?}', 'DocenteController@cambios')->name('Dcambios');
+Route::post('login','Auth\LoginController@login')->name('login');
+
+Route::get('Docente','DocenteController@indexD')->name('indexD');
+
+Route::post('logout','Auth\LoginController@logout')->name('logout');
+
+
+//Administrador
+
+Route::get('Administrador','AdministradorController@indexA')->name('indexA');
+
+Route::get('RegistrarD','AdministradorController@RegistrarD')->name('RegistrarD');
+
+Route::post('Administrador','AdministradorController@IngresarD')->name('IngresarD');
+//Docente
+
+
+
+Route::get('Mis_Cambios/{vida?}', 'CambiosController@cambios')->name('Dcambios');

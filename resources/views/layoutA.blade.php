@@ -24,11 +24,14 @@
             </div>
             <div class="col s6">
               <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><i class="small material-icons">person</i> <b>Name</b></li>
+                <li><i class="small material-icons">person</i> <b>{{auth()->user()->nombres . ' ' . auth()->user()->apellidos}}</b></li>
                 <li>&nbsp;&nbsp;</li>
              
 
-                <li><button type="submit" class="btn green">Cerrar Sesion</button></li>
+                <form method="POST" action="{{route('logout')}}">
+                  {{  csrf_field() }}
+                  <li><button type="submit" class="btn green">Cerrar Sesion</button></li>
+                </form>
 
                 <li>&nbsp;&nbsp;</li>
                
@@ -90,7 +93,7 @@
             <li><a class="dropdown-button" href="#!" data-activates="dropdown2">Docentes<i class="material-icons right">arrow_drop_down</i></a></li>
             <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Aulas<i class="material-icons right">arrow_drop_down</i></a></li>
        
-            <li><a href="{{ route ('Dcambios')}}"">Mis Cambios</a></li>         
+            <li><a href="{{ route ('Dcambios')}}">Mis Cambios</a></li>         
           </ul>
           
          
@@ -104,7 +107,7 @@
             <img src="{{asset('images/sena2.jpg')}}">
           </div>
           <a href="#!user"><img class="circle" src="{{asset('images/sena.png')}}"></a>
-          <a href="#!name"><span class="white-text name">Nombre / Apellido</span></a>
+          <a href="#!name"><span class="white-text name">{{auth()->user()->nombres . ' ' . auth()->user()->apellidos}}</span></a>
           
         </div></li>
       
@@ -120,7 +123,7 @@
                         <ul>
                           <li><a href="#!" class="black-text waves-effect">Registrar Docente</a></li>
               
-                          <li><a href="#!"  class="black-text waves-effect">Actualizar/Consultar Docente</a></li>
+                          <li><a href="{{route ('ActualizarD')}}"  class="black-text waves-effect">Actualizar/Consultar Docente</a></li>
 
                           <li><a href="#!"  class="black-text waves-effect">Asignar Cuentadante</a></li>
                         </ul>
@@ -146,17 +149,21 @@
 <ul id="dropdown2" class="dropdown-content">
     <li><a href="{{route ('RegistrarD')}}" class="black-text waves-effect">Registrar Docente</a></li>
     <li class="divider"></li> 
-    <li><a href="#!"  class="black-text waves-effect">Actualizar/Consultar Docente</a></li>
+    <li><a href="{{route ('ActualizarD')}}"  class="black-text waves-effect">Actualizar/Consultar Docente</a></li>
     <li class="divider"></li>
-    <li><a href="#!"  class="black-text waves-effect">Asignar Cuentadante</a></li>
+    <li><a href="{{route ('Asignar2')}}"  class="black-text waves-effect">Asignar Cuentadante</a></li>
+    <li class="divider"></li>
+    <li><a href="{{route ('TodosD')}}"  class="black-text waves-effect">Consultar Todos los Docentes</a></li>
 </ul>
           <!-- Dropdown1 Structure -->
 <ul id="dropdown1" class="dropdown-content">
-    <li><a href="#!" class="black-text waves-effect">Ingresar Aula</a></li>
+    <li><a href="{{ route ('AulaI')}}" class="black-text waves-effect">Ingresar Aula</a></li>
     <li class="divider"></li>
     <li><a href="#!"  class="black-text waves-effect">Actualizar/Consultar Aula</a></li>
     <li class="divider"></li>
-    <li><a href="#!"  class="black-text waves-effect">Asignar Aula</a></li>
+    <li><a href="{{route ('Asignar')}}"  class="black-text waves-effect">Asignar Aula</a></li>
+    <li class="divider"></li>
+    <li><a href="{{route ('ConsultarAulas')}}"  class="black-text waves-effect">Consultar Aulas</a></li>
 
 
 </ul>

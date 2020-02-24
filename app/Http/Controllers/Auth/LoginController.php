@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-
+use Illuminate\Support\Facades\DB;
 use Auth;
 
 class LoginController extends Controller
@@ -26,7 +26,7 @@ class LoginController extends Controller
     }
 
 
-    public function login()
+    public function login(Request $Request)
     {
         $credentials = $this->validate(request(),[
             'email' => 'email|required|string',
@@ -36,17 +36,27 @@ class LoginController extends Controller
 
         if(Auth::attempt($credentials))
         {
-            return redirect ()->route('indexD');
-
+            $correo = $Request -> email;
+            $password = $Request -> password;
+            $cargo = auth()->user()->cargo;        
+            
+            
+            if ($cargo == 'Administrador')
+            {
+                return redirect()->action('AdministradorController@indexA');                                   
+            }
+            else
+            {
+                return redirect ()->route('indexD');
+            }           
         }
-        
-    
-        return back()
-        ->withErrors(['email' => trans('auth.failed')])
-        ->withInput(request(['email'])) ;
-       
-
-
+        else
+        {
+            
+            return back()
+                    ->withErrors(['email' => trans('auth.failed')])
+                    ->withInput(request(['email'])) ;      
+        }
     }
   
     public function ShowLoginForm()

@@ -3,15 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use App\User;
-use App\Docente;
+use App\Cambios;
+use App\Aula;
+use App;
+
+
 
 class AdministradorController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function indexA(){
-
- 
+  
         return view ('Administrador.index');
     }
 
@@ -35,39 +43,167 @@ class AdministradorController extends Controller
         ]);
 
         //return $request->all();
-        $Registro = new Docente();
-        $Name = $request ->Nombres;
-        $Registro -> Nombres = $request ->Nombres;
-        $Name2 = $request ->Apellidos;
-        $Registro -> Apellidos = $request ->Apellidos;
-        $Email = $request ->Correo;
-        $Registro -> Correo = $request ->Correo;
-        $Registro -> IdentificacionDoc = $request ->Identificacion;
-        $Password = $request ->password;
-        $Registro -> Contraseña = bcrypt($request ->password);
-        $Registro -> Modalidad = $request ->Modalidad;
-        $Registro -> Cuentadante = $request ->Cuentadante;
+        $Registro = new User();
+        $Registro -> nombres = $request ->Nombres;
+        $Registro -> apellidos = $request ->Apellidos;
+        $Registro -> email = $request ->Correo;
+        $Registro -> identificacion = $request ->Identificacion;
+        $Registro -> password = bcrypt($request ->password);
+        $Registro -> modalidad = $request ->Modalidad;
+        $Registro -> cuentadante = $request ->Cuentadante;
+        $Registro -> cargo = 'Docente';
+        $Registro -> estado = 'Activo';
 
         $Registro->save();
 
-        
+        $Registro2 =  new Cambios();
+        $Registro2 -> identificacion = auth()->user()->identificacion;
+        $Registro2 -> accion = 'Inserto';
+        $Registro2 -> tabla = 'Docente';
 
-
-
-        $Registro2= new User();
-        $Registro2 -> name = $Name;
-        $Registro2 -> name2 = $Name2;
-        $Registro2 -> email = $Email;
-        $Registro2 -> password = bcrypt($Password);
         $Registro2->save();
-
 
         return back()->with('mensajed','Se agrego el docente correctamente');
 
     }
 
-    public function ValidarRegistro(Request $request)
+    public function ActualizarD()
     {
-       
+
+        return view ('Administrador.DActualizar');
     }
+
+    public function TodosD()
+    {
+        $datos = App\User::all()->where('identificacion','!=',auth()->user()->identificacion);
+
+        $Registro2 =  new Cambios();
+        $Registro2 -> identificacion = auth()->user()->identificacion;
+        $Registro2 -> accion = 'Consulto';
+        $Registro2 -> tabla = 'Docentes';
+
+        $Registro2->save();
+
+        return view ('Administrador.TodosD',compact('datos'));
+    }
+
+
+    public function ActualizarDoc(Request $request)
+    {
+        $request->validate([
+            'Nombres' => 'required|string',
+            'Apellidos' => 'required|string',   
+            'Correo' => 'email|required|string',
+            'Identificacion' => 'required|numeric',
+            'password' => 'required|confirmed',
+            'Modalidad' => 'required|string',
+            'Cuentadante' => 'required|string',
+ 
+        ]);
+
+        $Nombres = $request ->Nombres;
+        $Apellidos = $request ->Apellidos;
+        $Correo = $request ->Correo;
+        $Identificacion = $request ->Identificacion;
+        $password = $request ->password;
+        $Modalidad = $request ->Modalidad;
+        $Cuentadante = $request ->Cuentadante;
+        
+        $affected = DB::table('users')
+              ->where('identificacion', $Identificacion)
+              ->update(['nombres' => $Nombres]);
+
+              
+        return 's';
+
+    }
+
+  
+    public function AsignarCu()
+    {
+
+        
+
+    
+        return view('Administrador.AsignarCu');
+    }
+
+    public function Asignar2(Request $request)
+    {
+        $request->validate([
+            'identificacion' => 'required|numeric',
+            'aula' => 'required|string',
+        ]);
+
+        $identificacion = $request -> identificacion; 
+        $cuentadante = $request -> aula;
+        $affected = DB::table('users')
+        ->where('identificacion','=', $identificacion)
+        ->update(['cuentadante' => $cuentadante ]);
+
+        $Registro2 =  new Cambios();
+        $Registro2 -> identificacion = auth()->user()->identificacion;
+        $Registro2 -> accion = 'Asigno Cuentadante';
+        $Registro2 -> tabla = 'Docente';
+    
+         $Registro2->save();
+    
+        return back()->with('mensajed','Se cambio de cuentadante correctamente');
+    }
+
+    public function FiltrarDoc(Request $request)
+    {
+        $request->validate([
+            'Filtro' => 'required|string',
+            'Campo' => 'required|string',
+        ]);
+
+        $Filtro = $request ->Filtro;
+        $Campo = $request ->Campo;
+
+        if($Filtro == 'Identificacion')
+        {
+            $Datos = DB::table('users')->where('identificacion','=',$Campo)->get()->first();
+            $Registro2 =  new Cambios();
+            $Registro2 -> identificacion = auth()->user()->identificacion;
+            $Registro2 -> accion = 'Consulto';
+            $Registro2 -> tabla = 'Docente';
+    
+            $Registro2->save();
+            return view('Administrador.DActualizar2',compact('Datos'));
+        }
+        elseif($Filtro == 'Correo')
+        {
+            $Datos = DB::table('users')->where('email','=',$Campo)->get()->first();
+            $Registro2 =  new Cambios();
+            $Registro2 -> identificacion = auth()->user()->identificacion;
+            $Registro2 -> accion = 'Consulto';
+            $Registro2 -> tabla = 'Docente';
+    
+            $Registro2->save();
+            return view('Administrador.DActualizar2',compact('Datos'));
+        }
+        else
+        {
+            $Datos = DB::table('users')->where('id','=',$Campo)->get()->first();
+            $Registro2 =  new Cambios();
+            $Registro2 -> identificacion = auth()->user()->identificacion;
+            $Registro2 -> accion = 'Consulto';
+            $Registro2 -> tabla = 'Docente';
+    
+            $Registro2->save();
+            return view('Administrador.DActualizar2',compact('Datos'));
+        }
+
+
+    }
+
+    public function EditarDoc($id)
+    {
+        $user = App\User::findOrFail($id);
+
+        return view ('Administrador.EditarDoc',compact('user'));
+
+    }
+
 }

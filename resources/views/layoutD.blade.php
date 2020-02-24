@@ -24,14 +24,14 @@
             </div>
             <div class="col s6">
               <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><i class="small material-icons">person</i> <b>{{auth()->user()->name}}</b></li>
+                <li><i class="small material-icons">person</i> <b>{{auth()->user()->nombres . ' ' . auth()->user()->apellidos}}</b></li>
                 <li>&nbsp;&nbsp;</li>
               <form method="POST" action="{{route('logout')}}">
                 {{  csrf_field() }}
                 <li><button type="submit" class="btn green">Cerrar Sesion</button></li>
                 </form>
                 <li>&nbsp;&nbsp;</li>
-                <li>Cuentadante: @if($cuentadante) <b class="red-text">SI</b>
+                <li>Cuentadante: @if(auth()->user()->cuentadante == 'Si') <b class="green-text">SI</b>
                   @else
                   <b class="red-text">NO</b>
                    @endif 
@@ -91,8 +91,8 @@
             <li><a href="#">Datos Personales</a></li>
             <li><a class="dropdown-button" href="#!" data-activates="dropdown2">Novedades<i class="material-icons right">arrow_drop_down</i></a></li>
             <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Elementos<i class="material-icons right">arrow_drop_down</i></a></li>
-            <li><a href="#">Mis Aulas</a></li>   
-            <li><a href="{{ route ('Dcambios')}}"">Mis Cambios</a></li>         
+            <li><a href="{{ route ('ConsultarAulas')}}">Mis Aulas</a></li>   
+            <li><a href="{{ route ('Dcambios')}}">Mis Cambios</a></li>         
           </ul>
           
          
@@ -106,7 +106,7 @@
             <img src="{{asset('images/sena2.jpg')}}">
           </div>
           <a href="#!user"><img class="circle" src="{{asset('images/sena.png')}}"></a>
-          <a href="#!name"><span class="white-text name">Nombre / Apellido</span></a>
+          <a href="#!name"><span class="white-text name">{{auth()->user()->nombres . ' ' . auth()->user()->apellidos}}</span></a>
           <a href="#!email"><span class="white-text email">Cuentadante : <b class="red-text">NO</b> </span></a>
         </div></li>
       
@@ -152,7 +152,7 @@
 </ul>
           <!-- Dropdown1 Structure -->
 <ul id="dropdown1" class="dropdown-content">
-  <li><a href="#!" class="black-text">Ingresar Elementos</a></li>
+  <li><a href="{{route('IngresarElemento')}}" class="black-text">Ingresar Elementos</a></li>
   <li><a href="#!" class="black-text">Cambiar Estado de Elementos</a></li>
   <li class="divider"></li>
   <li><a href="#!"  class="black-text">Quitar Elementos</a></li>
@@ -184,6 +184,7 @@
 
       <script> 
        $(".button-collapse").sideNav();
+       $('select').material_select();
       </script>
     </body>
   </html>

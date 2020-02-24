@@ -9,9 +9,20 @@ class CambiosController extends Controller
 {
     public function cambios(){
 
-        $cambios = App\Cambios::all();
-        $cuentadante = false;
-       // return view ('miscambiosD', ['cambios' => $Cambios ] );
-       return view ('Docente.miscambiosD', compact('cambios','cuentadante'));
+        $cambios = App\Cambios::all()->where('identificacion','=',auth()->user()->identificacion);
+
+        $cargo = auth()->user()->cargo;  
+        
+        if($cargo == 'Administrador')
+        {
+
+            return view ('Administrador.miscambiosA', compact('cambios'));
+        }
+        else
+        {
+            return view ('Docente.miscambiosD', compact('cambios'));
+        }
+          
     }
+    
 }

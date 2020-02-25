@@ -194,6 +194,7 @@
       <script> 
        $(".button-collapse").sideNav();
        $('select').material_select();
+       $('#textarea1').val('New Text');
       </script>
     </body>
   </html>

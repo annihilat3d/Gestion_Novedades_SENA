@@ -1,6 +1,7 @@
 @extends('layoutA')
 
 @section('contenido')
+<div class="container">
 <h1 class="center">Mis Cambios</h1>
 <table class="bordered striped">
     <thead>
@@ -29,5 +30,5 @@
     </tbody>
 </table>
         
-
+</div>
 @endsection

@@ -3,15 +3,16 @@ create database Gestion_Novedades_SENA2
 use Gestion_Novedades_SENA2
 
 
-alter table users alter column created_at varchar(300)
-alter table users alter column updated_at varchar(300)
-alter table users alter column email_verified_at varchar(300)
+alter table users alter column created_at varchar(255)
+alter table users alter column updated_at varchar(255)
+alter table users alter column email_verified_at varchar(255)
 
 create table Aula
 (
 Id_Aula int primary key identity(1,1),
 Nombre varchar(50) not null,
 Numero int not null,
+Estado varchar(15),
 identificacion nvarchar(255),
 Constraint FK_Aula_Docente
 foreign key (identificacion)
@@ -33,7 +34,7 @@ create table Novedad
 (
 Id_Novedad int primary key identity(1,1),
 Novedad varchar(100) not null, -- Ej: Silla rota...
-Estado varchar(25) not null, -- Ej: Salida, ingreso, arreglo...
+Estado varchar(25), -- Ej: Salida, ingreso, arreglo...
 fecha date Default CONVERT (date,GETDATE()),
 hora time(0) Default convert (time, GETDATE()),
 Id_Elemento int,
@@ -69,11 +70,21 @@ create view AulasAsignadas as
 Select D.identificacion,D.nombres, D.apellidos, A.Nombre, A.Numero from users as D
 inner join Aula as A on D.identificacion = A.identificacion
 go
-create view NovedadesDocentes as 
+create view NovedadesElementos as 
 Select D.identificacion,D.nombres, D.apellidos, A.Nombre as Aula, A.Numero as Numero_Aula, E.Tipo_Elemento, N.Novedad, N.Estado, N.fecha, N.hora from users as D
 inner join Aula as A on D.identificacion = A.identificacion
 inner join Elemento as E on A.Id_Aula = E.Id_Aula
 inner join Novedad as N on N.Id_Elemento = E.Id_Elemento
+go
+create view NovedadesAula as 
+Select D.identificacion,D.nombres, D.apellidos, A.Nombre as Aula, A.Numero as Numero_Aula, N.Novedad, N.fecha, N.hora from users as D
+inner join Aula as A on D.identificacion = A.identificacion
+inner join Novedad as N on N.Id_Aula = A.Id_Aula
+go 
+create view ElementosDoc as
+Select D.identificacion,D.nombres, D.apellidos,A.Nombre as Aula, A.Numero, E.Id_Elemento, E.Tipo_Elemento, E.Estado from users as D
+inner join Aula as A on D.identificacion = A.identificacion
+inner join Elemento as E on A.Id_Aula = E.Id_Aula
 
 -- Procedimientos
 
@@ -398,3 +409,6 @@ update users set password = '$2y$10$eCq.Uaoc.Ip5D8gekVGJ/.LFX/kb03folnBUYlD3HTrg
 --$2y$10$eCq.Uaoc.Ip5D8gekVGJ/.LFX/kb03folnBUYlD3HTrgwN0znxc9K
 --123
 
+Select D.identificacion,D.nombres, D.apellidos,A.Nombre as Aula, A.Numero, E.Id_Elemento, E.Tipo_Elemento, E.Estado from users as D inner join Aula as A on D.identificacion = A.identificacion inner join Elemento as E on A.Id_Aula = E.Id_Aula where D.identificacion = 777 and E.Estado != 'Inactivo'
+
+Select Count(Tipo_Elemento) as N from Elemento where Id_Aula = 1 and Estado != 'Inactivo' and Tipo_Elemento = 'Silla'

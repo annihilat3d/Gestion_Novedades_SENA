@@ -145,17 +145,19 @@
 
           <!-- Dropdown2 Structure -->
 <ul id="dropdown2" class="dropdown-content">
-  <li><a href="#!" class="black-text">Ingresar Novedades</a></li>
+  <li><a href="{{route('IngresarNovedad3')}}" class="black-text">Ingresar Novedades en Elemento</a></li>
+  <li><a href="{{route('IngresarNovedad')}}" class="black-text">Ingresar Novedades en Aula</a></li>
   <li class="divider"></li>
-  <li><a href="#!"  class="black-text">Actualizar/Consultar Novedades</a></li>
+  <li><a href="{{route('ConsultarNovedades')}}"  class="black-text">Consultar Novedades/Elemento</a></li>
+  <li><a href="{{route('ConsultarNovedades2')}}"  class="black-text">Consultar Novedades/Aula</a></li>
 
 </ul>
           <!-- Dropdown1 Structure -->
 <ul id="dropdown1" class="dropdown-content">
   <li><a href="{{route('IngresarElemento')}}" class="black-text">Ingresar Elementos</a></li>
-  <li><a href="#!" class="black-text">Cambiar Estado de Elementos</a></li>
+  <li><a href="{{route('ConsultarElementos')}}"  class="black-text">Consultar Elementos</a></li>
   <li class="divider"></li>
-  <li><a href="#!"  class="black-text">Quitar Elementos</a></li>
+  <li><a href="{{route('QuitarElementos2')}}"  class="black-text">Quitar Elementos</a></li>
 
 </ul>
     
@@ -185,6 +187,7 @@
       <script> 
        $(".button-collapse").sideNav();
        $('select').material_select();
+       $('#textarea1').val('New Text');
       </script>
     </body>
   </html>

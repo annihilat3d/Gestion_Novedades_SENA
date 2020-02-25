@@ -19,12 +19,22 @@ class AdministradorController extends Controller
     }
     
     public function indexA(){
-  
+        $cargo = auth()->user()->cargo;  
+
+        if($cargo == 'Docente')
+        {
+            return view ('Docente.index');
+        }
         return view ('Administrador.index');
     }
 
     public function RegistrarD(){
+        $cargo = auth()->user()->cargo;  
 
+        if($cargo == 'Docente')
+        {
+            return view ('Docente.index');
+        }
         return view ('Administrador.DRegistrar');
     }
 
@@ -69,13 +79,24 @@ class AdministradorController extends Controller
 
     public function ActualizarD()
     {
+        $cargo = auth()->user()->cargo;  
 
+        if($cargo == 'Docente')
+        {
+            return view ('Docente.index');
+        }
         return view ('Administrador.DActualizar');
     }
 
     public function TodosD()
     {
-        $datos = App\User::all()->where('identificacion','!=',auth()->user()->identificacion);
+        $cargo = auth()->user()->cargo;  
+
+        if($cargo == 'Docente')
+        {
+            return view ('Docente.index');
+        }
+        $datos = App\User::all()->where('cargo','!=','Administrador');
 
         $Registro2 =  new Cambios();
         $Registro2 -> identificacion = auth()->user()->identificacion;
@@ -121,7 +142,12 @@ class AdministradorController extends Controller
   
     public function AsignarCu()
     {
+        $cargo = auth()->user()->cargo;  
 
+        if($cargo == 'Docente')
+        {
+            return view ('Docente.index');
+        }
         
 
     
@@ -153,6 +179,12 @@ class AdministradorController extends Controller
 
     public function FiltrarDoc(Request $request)
     {
+        $cargo = auth()->user()->cargo;  
+
+        if($cargo == 'Docente')
+        {
+            return view ('Docente.index');
+        }
         $request->validate([
             'Filtro' => 'required|string',
             'Campo' => 'required|string',
@@ -200,6 +232,12 @@ class AdministradorController extends Controller
 
     public function EditarDoc($id)
     {
+        $cargo = auth()->user()->cargo;  
+
+        if($cargo == 'Docente')
+        {
+            return view ('Docente.index');
+        }
         $user = App\User::findOrFail($id);
 
         return view ('Administrador.EditarDoc',compact('user'));

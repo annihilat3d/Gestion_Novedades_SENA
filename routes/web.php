@@ -71,6 +71,7 @@ Route::get('Mis_Cambios', 'CambiosController@cambios')->name('Dcambios');
 
 //Aula
 
+Route::get('AulasElementos/{aula}','AulaController@AulasElementos')->name('AulasElementos');
 
 Route::get('Asignar','AulaController@Asignar')->name('Asignar');
 
@@ -80,7 +81,31 @@ Route::get('ConsultarA','AulaController@ConsultarAulas')->name('ConsultarAulas')
 
 //Elemento
 
+Route::get('ConsultarElementos','ElementoController@ConsultarElementos')->name('ConsultarElementos');
+
 Route::get('IngresarElemento','ElementoController@IngresarElemento')->name('IngresarElemento');
 
 Route::post('IngresarElemento2','ElementoController@IngresarElemento2')->name('IngresarElemento2');
 
+
+Route::get('QuitarElementos2','ElementoController@QuitarElementos2')->name('QuitarElementos2');
+
+Route::get('QuitarElementos/{aula}','ElementoController@QuitarElementos')->name('QuitarElementos');
+
+Route::post('QuitarElementos3','ElementoController@QuitarElementos3')->name('QuitarElementos3');
+
+//Novedad
+
+Route::get('IngresarNovedad','NovedadController@IngresarNovedad')->name('IngresarNovedad');
+
+Route::post('IngresarNovedad2','NovedadController@IngresarNovedad2')->name('IngresarNovedad2');
+
+Route::get('SeleccionarArea/{area}','NovedadController@SeleccionarArea')->name('SeleccionarArea');
+
+Route::get('IngresarNovedad3','NovedadController@IngresarNovedad3')->name('IngresarNovedad3');
+
+Route::post('IngresarNovedad4','NovedadController@IngresarNovedad4')->name('IngresarNovedad4');
+
+Route::get('ConsultarNovedades','NovedadController@ConsultarNovedades')->name('ConsultarNovedades');
+
+Route::get('ConsultarNovedades2','NovedadController@ConsultarNovedades2')->name('ConsultarNovedades2');

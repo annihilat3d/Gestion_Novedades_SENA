@@ -18,7 +18,12 @@ class AulaController extends Controller
     
     public function index()
     {
+        $cargo = auth()->user()->cargo;  
 
+        if($cargo == 'Docente')
+        {
+            return view ('Docente.index');
+        }
         return view('Administrador.ARegistrar');
     }
 
@@ -52,6 +57,13 @@ class AulaController extends Controller
     }
     public function Asignar()
     {
+        $cargo = auth()->user()->cargo;  
+
+        if($cargo == 'Docente')
+        {
+            return view ('Docente.index');
+        }
+
        $aula = App\Aula::all();
   
       return view('Administrador.AsignarC',compact('aula'));
@@ -59,7 +71,12 @@ class AulaController extends Controller
 
     public function AsignarDoc(Request $request)
     {
+        $cargo = auth()->user()->cargo;  
 
+        if($cargo == 'Administrador')
+        {
+            return view ('Administrador.index');
+        }
         $request->validate([
             'identificacion' => 'required|numeric',
             'aula' => 'required',
@@ -101,7 +118,32 @@ class AulaController extends Controller
         }
           
 
-     
+    }
+
+    public function AulasElementos($aula)
+    {
+        $cargo = auth()->user()->cargo;  
+
+        if($cargo == 'Administrador')
+        {
+            return view ('Administrador.index');
+        }
+
+        $id = $aula;
+
+        $silla = DB::select("Select Count(Tipo_Elemento) as N from Elemento where Id_Aula = ? and Estado != 'Inactivo' and Tipo_Elemento = 'Silla'",[$id]);
+
+        $computadores = DB::select("Select Count(Tipo_Elemento) as N from Elemento where Id_Aula = ? and Estado != 'Inactivo' and Tipo_Elemento = 'Computador'",[$id]);
+
+        $armarios = DB::select("Select Count(Tipo_Elemento) as N from Elemento where Id_Aula = ? and Estado != 'Inactivo' and Tipo_Elemento = 'Armario'",[$id]);
+
+        $televisores = DB::select("Select Count(Tipo_Elemento) as N from Elemento where Id_Aula = ? and Estado != 'Inactivo' and Tipo_Elemento = 'TV'",[$id]);
+
+        $escritorios = DB::select("Select Count(Tipo_Elemento) as N from Elemento where Id_Aula = ? and Estado != 'Inactivo' and Tipo_Elemento = 'Escritorio'",[$id]);
+
+
+
+        return view('Docente.AulasElementos',compact('silla','computadores','armarios','televisores','escritorios'));
 
     }
 

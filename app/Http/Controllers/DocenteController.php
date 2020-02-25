@@ -12,11 +12,21 @@ class DocenteController extends Controller
     }
    
     public function indexD(){
-        $cuentadante = false;
-    
+   
 
-        // return view ('miscambiosD', ['cambios' => $Cambios ] );
-        return view ('Docente.index', compact('cuentadante'));
+        $cargo = auth()->user()->cargo;  
+
+        if($cargo == 'Administrador')
+        {
+            return view ('Administrador.index');
+        }
+        else
+        {
+            return view ('Docente.index');
+        }
+
+
+ 
     }
 
 
